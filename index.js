@@ -140,53 +140,6 @@ app.get('/api/registros', async (req, res) => {
   }
 });
 
-// NUEVO ENDPOINT PARA OBTENER UN SOLO REGISTRO POR internal_key
-app.get('/api/registros/:internal_key', async (req, res) => {
-  const { internal_key } = req.params;
-  const client = await pool.connect();
-  try {
-    // 1. Obtenemos el productor específico y convertimos su geometría a formato GeoJSON
-    const registroQuery = `
-      SELECT *, ST_AsGeoJSON(geom) as geojson
-      FROM registros_productor
-      WHERE internal_key = $1;
-    `;
-    const registroResult = await client.query(registroQuery, [internal_key]);
-    const registro = registroResult.rows[0];
-
-    if (!registro) {
-      return res.status(404).json({ success: false, message: 'Registro no encontrado' });
-    }
-
-    // 2. Buscamos sus fotos asociadas
-    const fotosQuery = `
-      SELECT id, tipo_foto, ruta_foto
-      FROM fotos_registro
-      WHERE internal_key = $1;
-    `;
-    const fotosResult = await client.query(fotosQuery, [internal_key]);
-    
-    // 3. Creamos una URL de datos para que el navegador pueda mostrar la imagen Base64
-    registro.fotos = fotosResult.rows.map(foto => ({
-        ...foto,
-        url: `data:image/jpeg;base64,${foto.ruta_foto}`
-    }));
-
-    // 4. Parseamos el string GeoJSON a un objeto JSON válido
-    if (registro.geojson) {
-        registro.geojson = JSON.parse(registro.geojson);
-    }
-
-    res.status(200).json(registro);
-
-  } catch (error) {
-    console.error(`Error al obtener el registro ${internal_key}:`, error);
-    res.status(500).json({ success: false, error: error.message });
-  } finally {
-    client.release();
-  }
-});
-
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
 });
