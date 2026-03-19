@@ -10,16 +10,15 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json({ limit: '50mb' })); // Aumentamos el límite para recibir fotos en Base64
 
-// Conexión a Base de Datos (Neon)
+// Conexión a Base de Datos (DEVIDA)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false // Necesario para Neon
-  }
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
 });
 
+
 // --- ENDPOINT PRINCIPAL ---
-app.post('/api/registros/single', async (req, res) => {
+app.post('/registros/single', async (req, res) => {
   const client = await pool.connect();
   
   try {

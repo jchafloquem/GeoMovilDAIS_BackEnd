@@ -76,7 +76,7 @@ A continuación se describen los endpoints disponibles en la API.
   Backend GeoDAIS funcionando 🚀
   ```
 
-### `POST /api/registros/single`
+### `POST /registros/single`
 
 - **Descripción**: Recibe y guarda un único registro de productor, incluyendo sus datos y fotos asociadas. La operación es transaccional. Si un registro con la misma `internal_key` ya existe, se actualiza su fecha de creación y se reemplazan las fotos.
 - **Cuerpo de la Petición (Body)**: Un objeto JSON con la estructura de un registro.
@@ -102,7 +102,7 @@ A continuación se describen los endpoints disponibles en la API.
   }
   ```
 
-### `GET /api/registros`
+### `GET /registros`
 
 - **Descripción**: Devuelve una lista de todos los registros de productores almacenados en la base de datos. Este endpoint está pensado para ser consumido por un panel web de visualización.
 - **Respuesta Exitosa (200)**: Un arreglo de objetos JSON, donde cada objeto es un registro de productor.
