@@ -64,6 +64,25 @@ node index.js
 
 El servidor estará escuchando en el puerto que hayas definido en tu archivo `.env` (por defecto, el puerto 3000).
 
+## Despliegue en Producción
+
+Para entornos de producción, se recomienda utilizar un gestor de procesos como **PM2** para mantener la aplicación activa permanentemente y reiniciarla en caso de fallos.
+
+1.  Instala las dependencias (omitirá las de desarrollo si existieran):
+    ```bash
+    npm install --production
+    ```
+
+2.  Instala PM2 globalmente:
+    ```bash
+    npm install -g pm2
+    ```
+
+3.  Inicia la aplicación:
+    ```bash
+    pm2 start index.js --name "geomovildais-backend"
+    ```
+
 ## API Endpoints
 
 A continuación se describen los endpoints disponibles en la API.
