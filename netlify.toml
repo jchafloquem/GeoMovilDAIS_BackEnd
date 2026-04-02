@@ -1,0 +1,10 @@
+[build]
+  functions = "functions"
+
+[functions]
+  external_node_modules = ["pg"]
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/index"
+  status = 200

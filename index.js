@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
+const serverless = require('serverless-http');
 
 const app = express();
 const port = process.env.PORT || 3000; // Puerto
@@ -169,6 +170,11 @@ app.get('/geodaismovil/api/registros', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Servidor escuchando en el puerto ${port}`);
-});
+// Si no estamos en Netlify, ejecutamos el listen normal
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Servidor escuchando en el puerto ${port}`);
+  });
+}
+
+module.exports.handler = serverless(app);
