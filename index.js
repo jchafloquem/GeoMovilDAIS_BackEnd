@@ -114,7 +114,13 @@ const pool = new Pool({
 
 // Endpoint de prueba
 app.get('/', (req, res) => {
-  res.send('Backend GeoDAIS funcionando 🚀');
+  res.status(200).json({
+    status: 'success',
+    message: 'Backend GeoMovilDAIS funcionando correctamente en Netlify 🚀',
+    environment: process.env.NODE_ENV || 'production',
+    database: 'PostgreSQL/PostGIS (Neon)',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // ENPOINT PARA OBTENER TODOS LOS REGISTROS PARA EL PANEL WEB
